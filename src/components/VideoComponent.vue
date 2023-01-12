@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-use-v-if-with-v-for,vue/no-confusing-v-for-v-if -->
 <template>
 <div v-show="showornot" class="row text-center justify-content-center mt-4">
 <div v-show="!isloading">
@@ -17,15 +18,15 @@
 <div class="container text-center">
 <b><span style="font-size: 26px;" class="text-white">Select Video Format</span></b>
   <div class="row g-0">
-    <div v-for="format in formats" :key="format.itag" @click="downloadFile(format.url,this.title)" class="col-12 col-md-3 col-lg-3 col-xs-12 col-sm-6 p-3 multi-button2">
+    <div v-for="format in this.formats.filter(item => item.width == 1920 || item.width == 1280 || item.width == 2560 || item.width == 7680 || item.width == 3840)" :key="format.itag" @click="downloadFile(format.url,this.title)" class="col-12 col-md-4 col-lg-3 col-xs-12 col-sm-6 p-3 multi-button2">
 
-     <button v-if="format.width == 1920">1080p FHD | {{format.fps}}FPS</button>
-<button v-else-if="format.width == 7680">4320p 8K | {{format.fps}}FPS</button>
-<button v-else-if="format.width == 3840">2160p 4K | {{format.fps}}FPS</button>
-<button v-else-if="format.width == 2560">1440p 2K | {{format.fps}}FPS</button>
-<button v-else-if="format.width == 1280">720p (HD) | {{format.fps}}FPS</button>
-<button v-else-if="format.width == 640">480p (HQ) | {{format.fps}}FPS</button>
-<button v-else-if="format.width && format.width != 1280 && format.width != 2560 && format.width != 1920 && format.width != 3840 && format.width != 7860">{{format.width}}x{{format.height}} | {{format.fps}}FPS</button>
+     <button style="background: rgb(220, 20, 60,0.95); color:white;" v-if="format.width == 1920">1080p (FHD) | {{format.fps}}FPS</button>
+<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 7680">4320p (8K) | {{format.fps}}FPS</button>
+<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 3840">2160p (4K) | {{format.fps}}FPS</button>
+<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 2560">1440p (2K) | {{format.fps}}FPS</button>
+<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 1280">720p (HD) | {{format.fps}}FPS</button>
+<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 640">480p (HQ) | {{format.fps}}FPS</button>
+<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width && format.width != 1280 && format.width != 2560 && format.width != 1920 && format.width != 3840 && format.width != 7860">{{format.width}}x{{format.height}} | {{format.fps}}FPS</button>
 
     </div>
   </div>
@@ -43,9 +44,15 @@ const axios = require('axios')
  import {Circle} from 'vue-loading-spinner'
 export default {
   name: 'VideoComponent',
+  computed:{
+  filteredVideos(){
+  console.log(this.formats)
+ return this.formats.filter(item => item.width == 1920 || item.width == 1280 || item.width == 2560 || item.width == 7680 || item.width == 3840)
+  }
+  },
   data(){
   return{
-  isloading: false
+  isloading: false,
   }
   },
 props:{

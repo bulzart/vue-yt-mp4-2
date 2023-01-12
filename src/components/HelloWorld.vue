@@ -54,6 +54,8 @@ axios.request(options).then((response) =>{
     this.title = response.data.title
 	this.thumbnail = response.data.thumbnail[3].url;
 	this.formats = response.data.adaptiveFormats;
+
+
 });
 click++;
 if(click % 2 == 0)
@@ -61,8 +63,6 @@ if(click % 2 == 0)
 else{
 this.showvideo = true;
 }
-
-
     }
   }
 }

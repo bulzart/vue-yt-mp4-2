@@ -297,7 +297,7 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
   font-family: var(--font-family);
   text-shadow: var(--shadow) 1px 1px;
   transition: flex-grow var(--duration) var(--ease);
-  border-radius: 13px;
+
 }
 
 .multi-button2 button + button {
@@ -308,10 +308,10 @@ background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
 .multi-button2 button:hover,
 .multi-button2 button:focus {
   flex-grow: 2;
-  color: white;
+  color: rgb(220, 20, 60);
   outline: none;
   text-shadow: none;
-  background-color: rgb(220, 20, 60,0.95);
+  background-color: white;
 }
 
 .multi-button2 button:focus {
