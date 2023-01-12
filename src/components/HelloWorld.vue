@@ -6,9 +6,9 @@
     <input type="text" id="input" @click="pasteit()" class="Input-text text-center" placeholder="https://www.youtube.com/watch?v=bWEbM86Bzz0">
     <label for="input" class="Input-label">Video link</label>
   </div>
-  <div class="multi-button">
-    <button @click="pasteit()">Paste <i class="bi bi-clipboard"></i></button>
-    <button @click="submitt()">Submit <i class="bi bi-arrow-down"></i></button>
+  <div class="multi-button mt-1">
+    <button style="background: rgb(220, 20, 60,0.95); color:white;" @click="pasteit()">Paste<i class="bi bi-clipboard"></i></button>
+    <button  style="background: white; color:rgb(220, 20, 60);" @click="submitt()">Submit <i class="bi bi-arrow-down"></i></button>
   </div>
 </div>
  <VideoComponent :showornot="showvideo" :thumbnail="thumbnail" :title="title" :formats="formats"/>
@@ -17,7 +17,7 @@
 <script>
 
 import VideoComponent from './VideoComponent.vue'
-
+var click = 0;
 const axios = require('axios')
 export default {
 components:{
@@ -55,8 +55,12 @@ axios.request(options).then((response) =>{
 	this.thumbnail = response.data.thumbnail[3].url;
 	this.formats = response.data.adaptiveFormats;
 });
-    this.showvideo = true;
-
+click++;
+if(click % 2 == 0)
+{this.showvideo = false;}
+else{
+this.showvideo = true;
+}
 
 
     }

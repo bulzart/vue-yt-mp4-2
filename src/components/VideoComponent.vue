@@ -17,21 +17,22 @@
 <div class="container text-center">
 <b><span style="font-size: 26px;" class="text-white">Select Video Format</span></b>
   <div class="row g-0">
-    <div v-for="format in formats" :key="format.itag" @click="downloadFile(format.url,this.title)" class="col-6 col-md-3 col-lg-3 col-xs-6 col-sm-6 p-3 multi-button2">
+    <div v-for="format in formats" :key="format.itag" @click="downloadFile(format.url,this.title)" class="col-12 col-md-3 col-lg-3 col-xs-12 col-sm-6 p-3 multi-button2">
 
-     <button v-if="format.width == 1920">{{format.width}}x{{format.height}}(FHD)</button>
-<button v-else-if="format.width == 7680">{{format.width}}x{{format.height}}(8K)</button>
-<button v-else-if="format.width == 3840">{{format.width}}x{{format.height}}(4K)</button>
-<button v-else-if="format.width == 2560">{{format.width}}x{{format.height}}(2K)</button>
-<button v-else-if="format.width == 1280">{{format.width}}x{{format.height}}(HD)</button>
-<button v-else-if="format.width && format.width != 1280 && format.width != 2560 && format.width != 1920 && format.width != 3840 && format.width != 7860">{{format.width}}x{{format.height}}</button>
+     <button v-if="format.width == 1920">1080p FHD | {{format.fps}}FPS</button>
+<button v-else-if="format.width == 7680">4320p 8K | {{format.fps}}FPS</button>
+<button v-else-if="format.width == 3840">2160p 4K | {{format.fps}}FPS</button>
+<button v-else-if="format.width == 2560">1440p 2K | {{format.fps}}FPS</button>
+<button v-else-if="format.width == 1280">720p (HD) | {{format.fps}}FPS</button>
+<button v-else-if="format.width == 640">480p (HQ) | {{format.fps}}FPS</button>
+<button v-else-if="format.width && format.width != 1280 && format.width != 2560 && format.width != 1920 && format.width != 3840 && format.width != 7860">{{format.width}}x{{format.height}} | {{format.fps}}FPS</button>
 
     </div>
   </div>
 </div>
 
 </div>
-<div v-show="isloading" class="text-center">
+<div v-show="isloading" class="text-center mt-4">
 <Circle/>
 </div>
 </div>
@@ -53,6 +54,12 @@ thumbnail: String,
 title: String,
 formats: []
 },
+   watch: {
+              showornot: function(value) {
+              if(value == true){
+                  this.isloading = false;}
+              }
+          },
 methods:{
 async downloadFile(url,label) {
 this.isloading = true;
@@ -66,7 +73,6 @@ this.isloading = true;
                       URL.revokeObjectURL(link.href)
                       window.location.href = 'http://localhost:8080';
                     }).catch(console.error)
-
           }
       },
       components:{
@@ -86,7 +92,6 @@ overflow: hidden;
 .aspect {
   display: none;
 }
-
 .cinema-embed {
   position: relative;
   height: 0;
@@ -95,11 +100,9 @@ overflow: hidden;
   overflow: hidden;
   background-color: #121212;
 }
-
 .cinema-embed.four-three {
   padding-bottom: 75%;
 }
-
 .cinema-embed > iframe,
 .cinema-embed > video {
   display: block;
@@ -112,7 +115,6 @@ overflow: hidden;
   height: 100%;
   cursor: pointer;
 }
-
 .cinema-embed .controls {
   position: absolute;
   z-index: 2;
@@ -125,8 +127,6 @@ overflow: hidden;
   width: 100%;
   opacity: 0.25;
 }
-
-
 .cinema-embed .loading {
   position: absolute;
   top: 0; left: 0;
@@ -139,9 +139,7 @@ overflow: hidden;
   opacity: .5;
   -webkit-filter: contrast(20);
   filter: contrast(20);
-
 }
-
 .cinema-embed .loading:before,
 .cinema-embed .loading:after {
   content: '';
@@ -160,21 +158,18 @@ overflow: hidden;
   -webkit-filter: blur(1.5rem);
   filter: blur(1.5rem);
 }
-
 .cinema-embed .loading:after {
   animation: spin 3.5s ease-in-out alternate infinite;
   border: 4rem solid #bada55;
   border-right: 4rem solid transparent;
   border-top: 4rem solid transparent;
 }
-
 .cinema-embed.loaded:hover .controls,
 .cinema-embed .controls.active{
   opacity: 1;
   transition: all 200ms ease-out;
   transform: translateY(0);
 }
-
 .cinema-embed .controls .icon {
   background: transparent;
   color: white;
@@ -190,11 +185,9 @@ overflow: hidden;
   text-rendering: optimizeLegibility;
   color: #ccc;
 }
-
 .cinema-embed .controls .icon:focus {
   color: white;
 }
-
 .cinema-embed .controls .icon[title]:after {
   display: none;
   font-family: sans-serif;
@@ -205,29 +198,22 @@ overflow: hidden;
   left: 50%;
   transform: translateX(-50%);
   top: -100%;
-
 }
-
 .cinema-embed .controls .icon:hover {
   color: #bada55;
 }
-
 .cinema-embed .controls .play {
   left: 1rem;
 }
-
 .cinema-embed .controls .subtitles {
   left: 6rem;
 }
-
 .cinema-embed .controls .fullscreen {
   right: 1rem;
 }
-
 .cinema-embed .controls .aspect {
   left: 8rem;
 }
-
 .cinema-embed .controls .scrubber {
   position: absolute;
   top: 0;
@@ -236,29 +222,22 @@ overflow: hidden;
   transform: translateY(-5px);
   z-index: 3;
 }
-
-
 .cinema-embed .controls .mute {
   color: white;
   left: calc(100% - 12rem);
 }
-
-
 .cinema-embed.muted .controls .mute:hover {
   color: #ccc;
 }
-
 .cinema-embed.muted .controls .mute {
   opacity: .8;
 }
-
 .cinema-embed .controls .mute:hover ~ .volume-controls,
 .cinema-embed .controls .volume-controls:hover {
   transition-delay: 0s;
   pointer-events: initial;
   transform: scaleY(1);
 }
-
 .cinema-embed .volume-controls {
   position: relative;
   left: calc(100% - 12rem);
@@ -274,7 +253,6 @@ overflow: hidden;
   transform: scaleY(0);
   transform-origin: bottom center;
 }
-
 .cinema-embed .controls .volume {
   position: absolute;
   width: 10rem;
@@ -282,13 +260,10 @@ overflow: hidden;
   transform-origin: left center;
   transform: rotate(-90deg) translateZ(0);
   left: 50%;
-
 }
-
 .cinema-embed.muted .controls .volume {
   opacity: 0.5;
 }
-
 .cinema-embed .controls .timing {
   color: white;
   left: calc(100% - 25rem);
@@ -304,31 +279,25 @@ overflow: hidden;
   font-family: monospace;
   font-size: 1.4rem;
 }
-
 .cinema-embed .controls .timing:hover {
   color: #bada55;
 }
-
 .cinema-embed .controls .timing:before {
   content: attr(data-current)" / ";
 }
 .cinema-embed .controls .timing:after {
   content: attr(data-duration);
 }
-
 .cinema-embed.timeleft .controls .timing:before {
   content: "-" attr(data-timeleft);
 }
-
 .cinema-embed:not(.loaded) .controls .timing:before,
 .cinema-embed:not(.loaded) .controls .timing:after {
   display: none;
 }
-
 .cinema-embed.timeleft .controls .timing:after {
   display: none;
 }
-
 .cinema-embed  .controls input[type=range] {
   -webkit-appearance: none;
 }
@@ -403,8 +372,6 @@ overflow: hidden;
 .cinema-embed  .controls input[type=range]:focus::-ms-fill-upper {
   background: #484d4d;
 }
-
-
 .cinema-embed progress {
   width: 100%;
   cursor: pointer;
@@ -413,18 +380,14 @@ overflow: hidden;
   color: #bada55;
   border: none;
 }
-
 .cinema-embed progress::-webkit-progress-bar {
   background-color: #484d4d;
 }
 .cinema-embed progress::-webkit-progress-value {
   background-color: #bada55
 }
-
 @keyframes spin {
   0% { transform: translateX(-50%) translateY(-50%) translateZ(0) rotate(0) }
   100% { transform: translateX(-50%) translateY(-50%) translateZ(0) rotate(360deg) }
 }
-
-
 </style>
