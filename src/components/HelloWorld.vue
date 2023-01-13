@@ -11,7 +11,7 @@
     <button  style="background: white; color:rgb(220, 20, 60);" @click="submitt()">Submit <i class="bi bi-arrow-down"></i></button>
   </div>
 </div>
- <VideoComponent :showornot="showvideo" :thumbnail="thumbnail" :title="title" :formats="formats"/>
+ <VideoComponent :showornot="showvideo" :thumbnail="thumbnail" :title="title" :formats="formats" :completeFormat="completeFormat"/>
 </template>
 
 <script>
@@ -29,9 +29,11 @@ VideoComponent
 showvideo: false,
 thumbnail: "",
 title: "",
-formats:[]
+formats:[],
+completeFormat:[]
   };
   },
+
   methods:{
   pasteit(){
   navigator.clipboard.readText().then((clipText) => document.getElementById("input").value = clipText);
@@ -54,7 +56,7 @@ axios.request(options).then((response) =>{
     this.title = response.data.title
 	this.thumbnail = response.data.thumbnail[3].url;
 	this.formats = response.data.adaptiveFormats;
-
+    this.completeFormat = response.data.formats;
 
 });
 click++;

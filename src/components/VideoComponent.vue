@@ -16,32 +16,45 @@
 </ul>
 
 <div class="container text-center">
-<b><span style="font-size: 26px;" class="text-white">Select Video Format</span></b>
+<b><span style="font-size: 26px;" class="text-white">Video Only (For higher resolutions)</span></b>
   <div class="row g-0">
-    <div v-for="format in this.formats.filter(item => item.width == 1920 || item.width == 1280 || item.width == 2560 || item.width == 7680 || item.width == 3840)" :key="format.itag" @click="downloadFile(format.url,this.title)" class="col-12 col-md-4 col-lg-3 col-xs-12 col-sm-6 p-3 multi-button2">
+    <div v-for="format in this.formats.filter(item => item.width == 1920 || item.width == 1280 || item.width == 2560 || item.width == 7680 || item.width == 3840)" :key="format.itag" @click="changelink(format.url)" class="col-12 col-md-4 col-lg-3 col-xs-12 col-sm-6 p-3 multi-button2">
 
-     <button style="background: rgb(220, 20, 60,0.95); color:white;" v-if="format.width == 1920">1080p (FHD) | {{format.fps}}FPS</button>
-<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 7680">4320p (8K) | {{format.fps}}FPS</button>
-<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 3840">2160p (4K) | {{format.fps}}FPS</button>
-<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 2560">1440p (2K) | {{format.fps}}FPS</button>
-<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 1280">720p (HD) | {{format.fps}}FPS</button>
-<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 640">480p (HQ) | {{format.fps}}FPS</button>
-<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width && format.width != 1280 && format.width != 2560 && format.width != 1920 && format.width != 3840 && format.width != 7860">{{format.width}}x{{format.height}} | {{format.fps}}FPS</button>
-
+     <button style="background: rgb(220, 20, 60,0.95); color:white;" v-if="format.width == 1920 && format.mimeType.substr(0,9) == 'video/mp4'">FHD(mp4)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 7680 && format.mimeType.substr(0,9) == 'video/mp4'">8K(mp4)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 3840&& format.mimeType.substr(0,9) == 'video/mp4'">4K(mp4)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 2560&& format.mimeType.substr(0,9) == 'video/mp4'">2K(mp4)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 1280&& format.mimeType.substr(0,9) == 'video/mp4'">HD(mp4)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 640&& format.mimeType.substr(0,9) == 'video/mp4'">HQ(mp4)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); color:white;" v-if="format.width == 1920 && format.mimeType.substr(0,9) == 'video/web'">FHD(webm)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 7680 && format.mimeType.substr(0,9) == 'video/web'">8K(webm)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 3840&& format.mimeType.substr(0,9) == 'video/web'">4K(webm)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 2560&& format.mimeType.substr(0,9) == 'video/web'">2K(webm)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 1280&& format.mimeType.substr(0,9) == 'video/web'">HD(webm)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 640&& format.mimeType.substr(0,9) == 'video/web'">HQ(webm)|{{calculateBytes(format.contentLength)}}</button>
     </div>
   </div>
+
+  <b><span style="font-size: 26px;" class="text-white">Full Video + Audio included</span></b>
+    <div class="row g-0 justify-content-center">
+      <div v-for="format in this.completeFormat.filter(format => format.mimeType.substr(0,9) == 'video/mp4' || format.mimeType.substr(0,9) == 'video/web')" :key="format.itag" @click="changelink(format.url)" class="col-12 col-md-4 col-lg-3 col-xs-12 col-sm-6 p-3 multi-button2">
+       <button style="background: rgb(220, 20, 60,0.95); color:white;">{{format.height}}p</button>
+      </div>
+    </div>
 </div>
 
 </div>
 <div v-show="isloading" class="text-center mt-4">
-<Circle/>
+<video oncontextmenu="alerte" :src="this.videolink" controls autoplay style="width:80%"></video>
+<img src="https://www.linkpicture.com/q/imagedwn_1.png">
+<img src="https://www.linkpicture.com/q/download_video-2.png">
 </div>
 </div>
 </template>
 
 <script>
-const axios = require('axios')
- import {Circle} from 'vue-loading-spinner'
+
+
 export default {
   name: 'VideoComponent',
   computed:{
@@ -53,13 +66,15 @@ export default {
   data(){
   return{
   isloading: false,
+  videolink: ''
   }
   },
 props:{
 showornot: Boolean,
 thumbnail: String,
 title: String,
-formats: []
+formats: [],
+completeFormat:[]
 },
    watch: {
               showornot: function(value) {
@@ -68,22 +83,26 @@ formats: []
               }
           },
 methods:{
-async downloadFile(url,label) {
+alerte(){
+alert("Po");
+},
+changelink(link){
+
 this.isloading = true;
-              await axios.get(url, { responseType: 'blob' })
-                    .then(response => {
-                      const blob = new Blob([response.data], { type: 'video/mp4' })
-                      const link = document.createElement('a')
-                      link.href = URL.createObjectURL(blob)
-                      link.download = label
-                      link.click()
-                      URL.revokeObjectURL(link.href)
-                      window.location.href = 'http://localhost:8080';
-                    }).catch(console.error)
-          }
-      },
+this.videolink = link;
+},
+calculateBytes(x){
+const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+let l = 0, n = parseInt(x, 10) || 0;
+
+  while(n >= 1024 && ++l){
+      n = n/1024;
+  }
+
+  return(n.toFixed(n < 10 && l > 0 ? 1 : 0) + ' ' + units[l]);
+}
+},
       components:{
-      Circle
       }
 }
 </script>
