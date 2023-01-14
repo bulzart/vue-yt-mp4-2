@@ -95,7 +95,7 @@ await fetch(url)
     .then(blob => {
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = filename;
+      link.download = "video.mp4";
       link.click();
   })
   .catch(err => console.log(err));
