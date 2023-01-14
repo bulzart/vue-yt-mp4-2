@@ -33,7 +33,6 @@ formats:[],
 completeFormat:[]
   };
   },
-
   methods:{
   pasteit(){
   navigator.clipboard.readText().then((clipText) => document.getElementById("input").value = clipText);
@@ -52,7 +51,7 @@ const options = {
   }
 };
 axios.request(options).then((response) =>{
-    console.log(response.data);
+
     this.title = response.data.title
 	this.thumbnail = response.data.thumbnail[3].url;
 	this.formats = response.data.adaptiveFormats;

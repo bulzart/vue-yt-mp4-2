@@ -15,58 +15,61 @@
   </li>
 </ul>
 
-<div class="container text-center">
-<b><span style="font-size: 26px;" class="text-white">Video Only (For higher resolutions)</span></b>
-  <div class="row g-0">
-    <div v-for="format in this.formats.filter(item => item.width == 1920 || item.width == 1280 || item.width == 2560 || item.width == 7680 || item.width == 3840)" :key="format.itag" @click="changelink(format.url)" class="col-12 col-md-4 col-lg-3 col-xs-12 col-sm-6 p-3 multi-button2">
+<div class="container">
 
-     <button style="background: rgb(220, 20, 60,0.95); color:white;" v-if="format.width == 1920 && format.mimeType.substr(0,9) == 'video/mp4'">FHD(mp4)|{{calculateBytes(format.contentLength)}}</button>
-<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 7680 && format.mimeType.substr(0,9) == 'video/mp4'">8K(mp4)|{{calculateBytes(format.contentLength)}}</button>
-<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 3840&& format.mimeType.substr(0,9) == 'video/mp4'">4K(mp4)|{{calculateBytes(format.contentLength)}}</button>
-<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 2560&& format.mimeType.substr(0,9) == 'video/mp4'">2K(mp4)|{{calculateBytes(format.contentLength)}}</button>
-<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 1280&& format.mimeType.substr(0,9) == 'video/mp4'">HD(mp4)|{{calculateBytes(format.contentLength)}}</button>
-<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 640&& format.mimeType.substr(0,9) == 'video/mp4'">HQ(mp4)|{{calculateBytes(format.contentLength)}}</button>
-<button style="background: rgb(220, 20, 60,0.95); color:white;" v-if="format.width == 1920 && format.mimeType.substr(0,9) == 'video/web'">FHD(webm)|{{calculateBytes(format.contentLength)}}</button>
-<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 7680 && format.mimeType.substr(0,9) == 'video/web'">8K(webm)|{{calculateBytes(format.contentLength)}}</button>
-<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 3840&& format.mimeType.substr(0,9) == 'video/web'">4K(webm)|{{calculateBytes(format.contentLength)}}</button>
-<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 2560&& format.mimeType.substr(0,9) == 'video/web'">2K(webm)|{{calculateBytes(format.contentLength)}}</button>
-<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 1280&& format.mimeType.substr(0,9) == 'video/web'">HD(webm)|{{calculateBytes(format.contentLength)}}</button>
-<button style="background: rgb(220, 20, 60,0.95); color:white;" v-else-if="format.width == 640&& format.mimeType.substr(0,9) == 'video/web'">HQ(webm)|{{calculateBytes(format.contentLength)}}</button>
-    </div>
-  </div>
-
-  <b><span style="font-size: 26px;" class="text-white">Full Video + Audio included</span></b>
     <div class="row g-0 justify-content-center">
-      <div v-for="format in this.completeFormat.filter(format => format.mimeType.substr(0,9) == 'video/mp4' || format.mimeType.substr(0,9) == 'video/web')" :key="format.itag" @click="changelink(format.url)" class="col-12 col-md-4 col-lg-3 col-xs-12 col-sm-6 p-3 multi-button2">
+      <div v-for="format in this.completeFormat.filter(format => format.mimeType.substr(0,9) == 'video/mp4' || format.mimeType.substr(0,9) == 'video/web')" :key="format.itag" @click="downloadURI(format.url,title)" class="col-12 col-md-4 col-lg-3 col-xs-12 col-sm-6 p-3 multi-button2">
        <button style="background: rgb(220, 20, 60,0.95); color:white;">{{format.height}}p</button>
       </div>
     </div>
+<b><span style="font-size: 26px;" class="text-white">Video Only (Higher resolutions & No audio)</span></b>
+  <div class="row g-0">
+    <div v-for="format in this.formats.filter(item => item.width == 1920 || item.width == 1280 || item.width == 2560 || item.width == 7680 || item.width == 3840)" :key="format.itag" @click="downloadURI(format.url,title)" class="col-12 col-md-4 col-lg-3 col-xs-12 col-sm-6 p-3 multi-button2">
+
+     <button style="background: rgb(220, 20, 60,0.95); white-space:nowrap; color:white;" v-if="format.width == 1920 && format.mimeType.substr(0,9) == 'video/mp4'">FHD(mp4)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); white-space:nowrap;color:white;" v-else-if="format.width == 7680 && format.mimeType.substr(0,9) == 'video/mp4'">8K(mp4)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); white-space:nowrap;color:white;" v-else-if="format.width == 3840&& format.mimeType.substr(0,9) == 'video/mp4'">4K(mp4)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); white-space:nowrap;color:white;" v-else-if="format.width == 2560&& format.mimeType.substr(0,9) == 'video/mp4'">2K(mp4)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); white-space:nowrap;color:white;" v-else-if="format.width == 1280&& format.mimeType.substr(0,9) == 'video/mp4'">HD(mp4)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); white-space:nowrap;color:white;" v-else-if="format.width == 640&& format.mimeType.substr(0,9) == 'video/mp4'">HQ(mp4)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); white-space:nowrap;color:white;" v-if="format.width == 1920 && format.mimeType.substr(0,9) == 'video/web'">FHD(webm)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); white-space:nowrap;color:white;" v-else-if="format.width == 7680 && format.mimeType.substr(0,9) == 'video/web'">8K(webm)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); white-space:nowrap;color:white;" v-else-if="format.width == 3840&& format.mimeType.substr(0,9) == 'video/web'">4K(webm)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); white-space:nowrap;color:white;" v-else-if="format.width == 2560&& format.mimeType.substr(0,9) == 'video/web'">2K(webm)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); white-space:nowrap;color:white;" v-else-if="format.width == 1280&& format.mimeType.substr(0,9) == 'video/web'">HD(webm)|{{calculateBytes(format.contentLength)}}</button>
+<button style="background: rgb(220, 20, 60,0.95); white-space:nowrap;color:white;" v-else-if="format.width == 640&& format.mimeType.substr(0,9) == 'video/web'">HQ(webm)|{{calculateBytes(format.contentLength)}}</button>
+    </div>
+  </div>
+
 </div>
 
 </div>
-<div v-show="isloading" class="text-center mt-4">
-<video oncontextmenu="alerte" :src="this.videolink" controls autoplay style="width:80%"></video>
-<img src="https://www.linkpicture.com/q/imagedwn_1.png">
-<img src="https://www.linkpicture.com/q/download_video-2.png">
+<div v-show="isloading" class="text-center mt-3">
+<Circle7 class="mt-1"/>
 </div>
+
+</div>
+<div class="text-center mt-2" v-show="isloading">
+<span class="text-white" style="font-size: 20px;"><b>The video is converting and pre-downloading so you'll receive the full file with no need to wait for download!</b></span>
 </div>
 </template>
 
 <script>
 
-
+import {Circle7} from 'vue-loading-spinner'
 export default {
   name: 'VideoComponent',
   computed:{
   filteredVideos(){
   console.log(this.formats)
  return this.formats.filter(item => item.width == 1920 || item.width == 1280 || item.width == 2560 || item.width == 7680 || item.width == 3840)
-  }
+  },
   },
   data(){
   return{
   isloading: false,
-  videolink: ''
+  videolink: '',
+  percents: 10
   }
   },
 props:{
@@ -83,14 +86,25 @@ completeFormat:[]
               }
           },
 methods:{
-alerte(){
-alert("Po");
-},
-changelink(link){
 
+async downloadURI(url, filename) {
 this.isloading = true;
-this.videolink = link;
+try{
+await fetch(url)
+    .then(response => response.blob())
+    .then(blob => {
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
+  })
+  .catch(err => console.log(err));
+ alert("aaaaaaaa")
+}catch(err){
+console.log(err)}
 },
+
+
 calculateBytes(x){
 const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 let l = 0, n = parseInt(x, 10) || 0;
@@ -103,6 +117,7 @@ let l = 0, n = parseInt(x, 10) || 0;
 }
 },
       components:{
+      Circle7
       }
 }
 </script>

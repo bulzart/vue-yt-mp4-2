@@ -17,9 +17,13 @@
     "cors": "^2.8.5",
     "gh-pages": "^4.0.0",
     "jquery": "^3.6.3",
+    "lightvue": "^1.5.1",
+    "primevue": "^3.22.1",
     "vue": "^3.2.13",
     "vue-axios": "^3.5.2",
     "vue-loading-spinner": "^1.0.11",
+    "vue-meta": "^2.4.0",
+    "vue-progressbar": "^0.7.5",
     "youtube-link-to-id": "^1.0.2"
   },
   "devDependencies": {
